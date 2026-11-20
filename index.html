@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>Weather</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Weather home">
+        <span class="brand-mark" aria-hidden="true">☀</span>
+        <span>weather<span class="brand-dot">.</span></span>
+      </a>
+
+      <div class="side-label">MENU</div>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-view="today"><span class="nav-icon">◷</span> Today</button>
+        <button class="nav-item" type="button" data-view="week"><span class="nav-icon">▤</span> 7-day forecast</button>
+      </nav>
+
+      <div class="saved-heading">
+        <span class="side-label">YOUR PLACES</span>
+        <span class="saved-count">03</span>
+      </div>
+      <div class="saved-places">
+        <button class="place-item" type="button" data-city="Seattle" data-country="United States">
+          <span class="place-pin">●</span><span class="place-name">Seattle</span><span class="place-arrow">↗</span>
+        </button>
+        <button class="place-item" type="button" data-city="London" data-country="United Kingdom">
+          <span class="place-pin">●</span><span class="place-name">London</span><span class="place-arrow">↗</span>
+        </button>
+        <button class="place-item" type="button" data-city="Tokyo" data-country="Japan">
+          <span class="place-pin">●</span><span class="place-name">Tokyo</span><span class="place-arrow">↗</span>
+        </button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-weather-art" aria-hidden="true">
+          <span class="art-sun">☼</span><span class="art-cloud">☁</span>
+        </div>
+        <div class="sidebar-tip">A little sunshine<br>goes a long way.</div>
+        <div class="sidebar-foot">WEATHER, AT A GLANCE</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Weather</span><span class="crumb-slash">/</span><span id="breadcrumb-city">Today</span></div>
+        <form class="search-form" id="search-form" role="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="city-search" type="search" placeholder="Search for a city..." aria-label="Search for a city" autocomplete="off">
+          <kbd>ENTER</kbd>
+        </form>
+        <div class="top-actions">
+          <button class="icon-button location-button" id="location-button" type="button" aria-label="Use my location" title="Use my location">◎</button>
+          <div class="unit-toggle" role="group" aria-label="Temperature units">
+            <button type="button" class="unit-button selected" data-unit="celsius" aria-pressed="true">°C</button>
+            <button type="button" class="unit-button" data-unit="fahrenheit" aria-pressed="false">°F</button>
+          </div>
+          <button class="icon-button refresh-button" id="refresh-button" type="button" aria-label="Refresh weather" title="Refresh">↻</button>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow" id="today-label">YOUR DAILY WEATHER</p>
+          <h1 id="page-title">Good morning <span class="greeting-sun">✳</span></h1>
+        </div>
+        <div class="date-block"><span class="date-dot"></span><span id="today-date">Loading date…</span></div>
+      </section>
+
+      <div id="status-message" class="status-message" role="status" aria-live="polite" hidden></div>
+
+      <section class="hero-card" aria-label="Current weather">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+          <div class="hero-location"><span class="location-pin">⌖</span><span id="location-name">Finding your weather…</span><span class="location-country" id="location-country"></span></div>
+          <div class="current-condition" id="current-condition">Loading conditions</div>
+          <div class="current-temp-row">
+            <div class="current-temp" id="current-temp">--<span>°</span></div>
+            <div class="hero-weather-icon" id="hero-weather-icon" aria-hidden="true">☁</div>
+          </div>
+          <div class="feels-like">Feels like <strong id="feels-like">--°</strong><span class="feels-divider">·</span><span id="high-low">H: --° L: --°</span></div>
+        </div>
+        <div class="hero-side">
+          <div class="hero-side-top"><span class="live-dot"></span> LIVE CONDITIONS</div>
+          <div class="sun-path" aria-hidden="true"><span class="sun-path-line"></span><span class="sun-path-sun">☼</span><span class="sun-path-horizon"></span></div>
+          <div class="sun-times">
+            <div><span class="sun-time-icon sunrise">↗</span><span class="sun-time-label">SUNRISE</span><strong id="sunrise-time">--:--</strong></div>
+            <div><span class="sun-time-icon sunset">↘</span><span class="sun-time-label">SUNSET</span><strong id="sunset-time">--:--</strong></div>
+          </div>
+          <div class="hero-updated" id="updated-time">Updating now</div>
+        </div>
+      </section>
+
+      <div class="section-heading forecast-heading">
+        <div><span class="section-kicker">THE NEXT HOURS</span><h2>Today’s forecast</h2></div>
+        <button class="text-button" type="button" data-view="week">7-day forecast <span>→</span></button>
+      </div>
+      <section class="hourly-card" id="hourly-forecast" aria-label="Hourly forecast">
+        <div class="loading-line">Fetching the forecast…</div>
+      </section>
+
+      <div class="section-heading highlights-heading">
+        <div><span class="section-kicker">AT A GLANCE</span><h2>Today’s highlights</h2></div>
+      </div>
+      <section class="highlights-grid" aria-label="Weather highlights">
+        <article class="highlight-card">
+          <div class="highlight-top"><span>WIND</span><span class="highlight-symbol">⌁</span></div>
+          <div class="highlight-value"><span id="wind-speed">--</span><small id="wind-unit">km/h</small></div>
+          <div class="wind-direction"><span class="compass-arrow" id="wind-arrow">↑</span><span id="wind-direction">--</span></div>
+        </article>
+        <article class="highlight-card">
+          <div class="highlight-top"><span>HUMIDITY</span><span class="highlight-symbol">◌</span></div>
+          <div class="highlight-value"><span id="humidity">--</span><small>%</small></div>
+          <div class="meter"><span id="humidity-meter"></span></div>
+          <div class="highlight-caption">Comfort level</div>
+        </article>
+        <article class="highlight-card">
+          <div class="highlight-top"><span>UV INDEX</span><span class="highlight-symbol">☼</span></div>
+          <div class="highlight-value"><span id="uv-index">--</span></div>
+          <div class="highlight-caption" id="uv-caption">—</div>
+        </article>
+        <article class="highlight-card">
+          <div class="highlight-top"><span>VISIBILITY</span><span class="highlight-symbol">◉</span></div>
+          <div class="highlight-value"><span id="visibility">--</span><small>km</small></div>
+          <div class="highlight-caption">Across your area</div>
+        </article>
+      </section>
+
+      <section class="weekly-section" id="weekly-section" hidden>
+        <div class="section-heading weekly-heading">
+          <div><span class="section-kicker">PLAN AHEAD</span><h2>7-day forecast</h2></div>
+        </div>
+        <div class="weekly-card" id="weekly-forecast" aria-label="Seven day forecast"></div>
+      </section>
+
+      <footer class="app-footer"><span>Weather data by Open-Meteo</span><span id="footer-location">Made for your day <span>✦</span></span></footer>
+    </main>
+  </div>
+</body>
+</html>
